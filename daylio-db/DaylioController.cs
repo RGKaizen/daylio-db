@@ -18,6 +18,7 @@ namespace rgkaizen.daylio
         [AllowAnonymous]
         public async Task<JsonResult> process()
         {
+            await _daylioRepository.truncateTables();
             await _daylioRepository.populateRawData();
             await _daylioRepository.convertRawData();
             return Json("Ok");

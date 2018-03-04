@@ -14,6 +14,8 @@ namespace rgkaizen.daylio
 
         Task convertRawData();
 
+        Task truncateTables();
+
         List<DaylioActivityModel> getActivites();
 
         List<DaylioEntryModel> getEntries();
@@ -69,17 +71,27 @@ namespace rgkaizen.daylio
                     ParseActivities(raw, entry.Guid, activitiesList, refList);
                 }
             }
+            _dbContext.Entries.AddRange(entriesList);
+            _dbContext.Activities.AddRange(activitiesList);
+            _dbContext.SaveChanges();
 
             var refModelList = BuildRefModelList(entriesList, activitiesList, refList);
 
-            _dbContext.Entries.AddRange(entriesList);
-            _dbContext.Activities.AddRange(activitiesList);
             _dbContext.ActivityEntryRefs.AddRange(refModelList);
             _dbContext.SaveChanges();
 
             Console.WriteLine($"Got {_dbContext.Entries.Count()} entries");
             Console.WriteLine($"Got {_dbContext.Activities.Count()} activites");
             Console.WriteLine($"Got {_dbContext.ActivityEntryRefs.Count()} entry activity refs");
+        }
+
+        public async Task truncateTables()
+        {
+            _dbContext.RemoveRange(_dbContext.Raws);
+            _dbContext.RemoveRange(_dbContext.Entries);
+            _dbContext.RemoveRange(_dbContext.Activities);
+            _dbContext.RemoveRange(_dbContext.ActivityEntryRefs);
+            _dbContext.SaveChanges();
         }
 
         private DaylioEntryModel CreateNewEntry(DaylioRawModel raw)
@@ -130,7 +142,9 @@ namespace rgkaizen.daylio
             List<(string entryGuid, string activityGuid)> refList)
         {
             return refList.Select(reference =>
-            {
+            {              
+                var s = entries.Find(entry => entry.Guid.Equals(reference.entryGuid)).Id;
+                var q = activities.Find(activity => activity.Guid.Equals(reference.activityGuid)).Id;
                 return new DaylioActivityEntryRefModel
                 {
                     EntryId = entries.Find(entry => entry.Guid.Equals(reference.entryGuid)).Id,
