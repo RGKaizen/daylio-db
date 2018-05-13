@@ -147,8 +147,8 @@ namespace rgkaizen.daylio
                 var q = activities.Find(activity => activity.Guid.Equals(reference.activityGuid)).Id;
                 return new DaylioActivityEntryRefModel
                 {
-                    EntryId = entries.Find(entry => entry.Guid.Equals(reference.entryGuid)).Id,
-                    ActivityId = activities.Find(activity => activity.Guid.Equals(reference.activityGuid)).Id
+                    entry_id = entries.Find(entry => entry.Guid.Equals(reference.entryGuid)).Id,
+                    activity_id = activities.Find(activity => activity.Guid.Equals(reference.activityGuid)).Id
                 };
             }).ToList();
         }

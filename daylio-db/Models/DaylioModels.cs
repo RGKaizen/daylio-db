@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace rgkaizen.daylio.Models
 {
+    [Table("raws")]
     public class DaylioRawModel
     {
         [Key]
@@ -28,6 +30,7 @@ namespace rgkaizen.daylio.Models
         public string note { get; set; }
     }
 
+    [Table("entries")]
     public class DaylioEntryModel
     {
         [Key]
@@ -38,6 +41,8 @@ namespace rgkaizen.daylio.Models
         public string Guid { get; set; }
     }
 
+    [Table("activities")]
+
     public class DaylioActivityModel
     {
         [Key]
@@ -47,12 +52,13 @@ namespace rgkaizen.daylio.Models
         public string Guid { get; set; }
     }
 
+    [Table("activity_entry_refs")]
     public class DaylioActivityEntryRefModel
     {
         [Key]
         public int Id { get; set; }
-        public int EntryId { get; set; }
-        public int ActivityId { get; set; }
+        public int entry_id { get; set; }
+        public int activity_id { get; set; }
     }
 
     public class DaylioPayload

@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using System.IO;
+using System;
 
 namespace rgkaizen.daylio
 {
@@ -20,6 +21,7 @@ namespace rgkaizen.daylio
             services.AddDbContext<DaylioDBContext>(options =>
                 options.UseMySQL(Configuration.GetConnectionString("DefaultConnection")));
 
+            Console.WriteLine($"{Configuration.GetConnectionString("DefaultConnection")}");
             services.AddScoped<IDaylioRepository, DaylioRepository>();
             services.AddMvc();
         }
