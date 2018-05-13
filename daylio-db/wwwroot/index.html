@@ -1,9 +1,40 @@
- 
+<!DOCTYPE html>
 <html>
-    <header><title>This is title</title></header>
-    
-    <body>
-    Hello world
-    </body>
+  <head>
+    <title>Daylio Data Viewer</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="main.css" rel="stylesheet" media="screen">
+
+    <style>
+            .axis path {
+                fill: none;
+                stroke: #777;
+                shape-rendering: crispEdges;
+            }
+            .axis text {
+                font-family: Lato;
+                font-size: 13px;
+            }
+
+            .grid line {
+                stroke: lightgrey;
+                stroke-opacity: 0.7;
+                shape-rendering: crispEdges;
+            }
+
+            .grid path {
+                stroke-width: 0;
+            }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+        <svg id="visualisation" width="1000" height="500"></svg>
+    </div>
+    <script src="/bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="/bower_components/d3/d3.min.js"></script>
+    <script src="main.js"}></script>  
+  </body>
 </html>
-    
