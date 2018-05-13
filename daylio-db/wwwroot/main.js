@@ -24,6 +24,22 @@ function createGraph() {
     // REQUEST THE DATA
     d3.json("/daylio/activityCount", function(error, activities) 
     {
+
+        activities = activities.filter(function(d) 
+        {
+            if(
+               d["name"] == "" 
+            || d["name"] == "" 
+            || d["name"] == "work"
+            || d["name"] == "cooked"
+            || d["name"] == "gaming"
+            )
+            {
+                return d;
+            }
+
+        })
+
         //ar parseTime = d3.timeParse("%Y/%m");
         var format = d3.time.format("%Y-%m");
         // format the data
@@ -34,8 +50,8 @@ function createGraph() {
         var max = Math.max.apply(Math, activities.map(x => x.count)) + 1; 
 
         // define the x scale (horizontal)
-        var mindate = new Date(2017,3,15),
-        maxdate = new Date(2018,4,31);
+        var mindate = new Date(2017,4,15),
+        maxdate = new Date(2018,3,0);
 
         var vis = d3.select("#visualisation"),
         WIDTH = 1000,
@@ -46,7 +62,6 @@ function createGraph() {
             bottom: 20,
             left: 50
         },
-
         xScale = d3.time.scale().range([MARGINS.left, WIDTH - MARGINS.right]).domain([mindate, maxdate]),
         yScale = d3.scale.linear().range([HEIGHT - MARGINS.top, MARGINS.bottom]).domain([0, max]),
 
@@ -68,7 +83,7 @@ function createGraph() {
             .attr("class", "y axis")
             .attr("transform", "translate(" + (MARGINS.left) + ",0)")
             .call(yAxis);       
-        
+    
         // Function for determining x and y values for lines
         var lineGen = d3.svg.line()
             .x(function(d) {
@@ -79,15 +94,25 @@ function createGraph() {
             })
             .interpolate("basis");
 
-        var groupedActivites = groupBy(activities, "name");
-        for(var key in groupedActivites)
+        var groupedActivities = groupBy(activities, "name");
+
+        var color = d3.scale.category10()
+        var i = 0;
+        for(var key in groupedActivities)
         {
             vis.append('svg:path')
-                .attr('d', lineGen(groupedActivites[key]))
-                .attr('stroke', "red")
+                .attr('d', lineGen(groupedActivities[key]))
+                .attr('stroke', color(i))
                 .attr('stroke-width', 2)
                 .attr('fill', 'none')
-                .attr('class', 'line')           
+                .attr('class', 'line')
+            vis.append("text")
+                .attr("transform", "translate(" + ((width+3)-100) + "," + ((30*i) + 200) + ")")
+                .attr("dy", ".35em")
+                .attr("text-anchor", "start")
+                .style("fill", color(i))
+                .text(key);   
+            i++;      
         }
     
     });
