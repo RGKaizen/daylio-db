@@ -166,14 +166,6 @@ namespace rgkaizen.daylio
         {
             return refList.Select(reference =>
             {
-                var s = entries.Find(entry => entry.Guid.Equals(reference.entryGuid)).Id;
-                var q = activities.Find(activity => activity.Guid.Equals(reference.activityGuid)).Id;
-
-                if (q == default(int) || s == default(int))
-                {
-                    Console.WriteLine();
-                }
-
                 return new DaylioActivityEntryRefModel
                 {
                     entry_id = entries.Find(entry => entry.Guid.Equals(reference.entryGuid)).Id,

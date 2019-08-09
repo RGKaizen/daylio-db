@@ -27,7 +27,7 @@ CREATE TABLE `entries` (
 
 CREATE TABLE `raws` (
   `key` int(11) NOT NULL AUTO_INCREMENT,
-  `full_date` int(11) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `full_date` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
   `date` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
   `weekday` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
   `time` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -37,4 +37,5 @@ CREATE TABLE `raws` (
   PRIMARY KEY (`key`),
   UNIQUE KEY `raws_key_IDX` (`key`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+
 
