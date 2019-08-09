@@ -37,5 +37,12 @@ namespace rgkaizen.daylio
         {
             return Json(_daylioRepository.getEntries());
         }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<JsonResult> activityCount()
+        {
+            return Json(_daylioRepository.getActivityCounts());
+        }
     }
 }

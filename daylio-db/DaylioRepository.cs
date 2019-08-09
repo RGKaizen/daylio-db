@@ -1,4 +1,5 @@
 ﻿using CsvHelper;
+using Microsoft.EntityFrameworkCore;
 using rgkaizen.daylio.Models;
 using System;
 using System.Collections.Generic;
@@ -19,6 +20,8 @@ namespace rgkaizen.daylio
         List<DaylioActivityModel> getActivites();
 
         List<DaylioEntryModel> getEntries();
+
+        List<DaylioMonthlyActivityDto> getActivityCounts();
     }
 
     public class DaylioRepository : IDaylioRepository
@@ -38,6 +41,16 @@ namespace rgkaizen.daylio
         public List<DaylioEntryModel> getEntries()
         {
             return _dbContext.Entries.ToList();
+        }
+
+        public List<DaylioMonthlyActivityDto> getActivityCounts()
+        {
+            var results = new List<DaylioMonthlyActivityDto>(); 
+            var sql = @"select YEAR(e.date) as Year, MONTH(e.date) as Month, a.name, count(aer.id) as count from entries e 
+                        join activity_entry_refs aer on aer.entry_id = e.id
+                        join activities a on aer.activity_id = a.id
+                        group by YEAR(e.date), MONTH(e.date), aer.activity_id";
+            return RawSqlHack.ExecSQL<DaylioMonthlyActivityDto>(sql, _dbContext);
         }
 
         #region ParseCSV
@@ -164,8 +177,8 @@ namespace rgkaizen.daylio
 
                 return new DaylioActivityEntryRefModel
                 {
-                    EntryId = entries.Find(entry => entry.Guid.Equals(reference.entryGuid)).Id,
-                    ActivityId = activities.Find(activity => activity.Guid.Equals(reference.activityGuid)).Id
+                    entry_id = entries.Find(entry => entry.Guid.Equals(reference.entryGuid)).Id,
+                    activity_id = activities.Find(activity => activity.Guid.Equals(reference.activityGuid)).Id
                 };
             }).ToList();
         }

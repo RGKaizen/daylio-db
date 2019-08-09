@@ -1,0 +1,40 @@
+CREATE TABLE `activities` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `isPrivate` bool COLLATE utf8mb4_unicode_ci NOT NULL,
+  `guid` varchar(36) COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `activities_id_IDX` (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+
+CREATE TABLE `activity_entry_refs` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `entry_id` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `activity_id` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `activity_entry_refs_id_IDX` (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+
+CREATE TABLE `entries` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `date` datetime COLLATE utf8mb4_unicode_ci NOT NULL,
+  `mood` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `guid` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `note` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `entries_id_IDX` (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+
+CREATE TABLE `raws` (
+  `key` int(11) NOT NULL AUTO_INCREMENT,
+  `year` int(11) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `date` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `weekday` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `time` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `mood` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `activities` varchar(500) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `note` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`key`),
+  UNIQUE KEY `raws_key_IDX` (`key`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+

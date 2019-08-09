@@ -2,7 +2,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.OpenApi.Models;
+using Microsoft.Extensions.Configuration;
+using System.IO;
+using System;
 
 namespace rgkaizen.daylio
 {
@@ -13,13 +15,14 @@ namespace rgkaizen.daylio
             Configuration = configuration;
         }
         public IConfiguration Configuration { get; }
-
+    
         public void ConfigureServices(IServiceCollection services)
         {
             //services.AddDbContext<DaylioDBContext>(opt => opt.UseInMemoryDatabase("daylioDB"));
             services.AddDbContext<DaylioDBContext>(options =>
                 options.UseMySQL(Configuration.GetConnectionString("DefaultConnection")));
 
+            Console.WriteLine($"{Configuration.GetConnectionString("DefaultConnection")}");
             services.AddScoped<IDaylioRepository, DaylioRepository>();
             services.AddMvc();
             services.AddSwaggerGen(c =>
@@ -30,6 +33,7 @@ namespace rgkaizen.daylio
 
         public void Configure(IApplicationBuilder app)
         {
+            app.UseStaticFiles();
             app.UseMvc(routes =>
             {
                 routes.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
