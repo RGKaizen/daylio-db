@@ -27,7 +27,7 @@ CREATE TABLE `entries` (
 
 CREATE TABLE `raws` (
   `key` int(11) NOT NULL AUTO_INCREMENT,
-  `year` int(11) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `full_date` int(11) COLLATE utf8mb4_unicode_ci NOT NULL,
   `date` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
   `weekday` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
   `time` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,

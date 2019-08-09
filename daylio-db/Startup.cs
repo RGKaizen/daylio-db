@@ -2,8 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Configuration;
-using System.IO;
+using Microsoft.OpenApi.Models;
 using System;
 
 namespace rgkaizen.daylio
@@ -15,7 +14,7 @@ namespace rgkaizen.daylio
             Configuration = configuration;
         }
         public IConfiguration Configuration { get; }
-    
+
         public void ConfigureServices(IServiceCollection services)
         {
             //services.AddDbContext<DaylioDBContext>(opt => opt.UseInMemoryDatabase("daylioDB"));

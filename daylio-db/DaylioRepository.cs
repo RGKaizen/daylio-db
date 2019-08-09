@@ -1,5 +1,4 @@
 ﻿using CsvHelper;
-using Microsoft.EntityFrameworkCore;
 using rgkaizen.daylio.Models;
 using System;
 using System.Collections.Generic;
@@ -45,7 +44,7 @@ namespace rgkaizen.daylio
 
         public List<DaylioMonthlyActivityDto> getActivityCounts()
         {
-            var results = new List<DaylioMonthlyActivityDto>(); 
+            var results = new List<DaylioMonthlyActivityDto>();
             var sql = @"select YEAR(e.date) as Year, MONTH(e.date) as Month, a.name, count(aer.id) as count from entries e 
                         join activity_entry_refs aer on aer.entry_id = e.id
                         join activities a on aer.activity_id = a.id
@@ -90,7 +89,7 @@ namespace rgkaizen.daylio
 
             var refModelList = BuildRefModelList(entriesList, activitiesList, refList);
 
-            var s = refModelList.Select(x => x.ActivityId).Distinct().ToList();
+            var s = refModelList.Select(x => x.activity_id).Distinct().ToList();
             var q = string.Join(",", s);
             _dbContext.ActivityEntryRefs.AddRange(refModelList);
             _dbContext.SaveChanges();
