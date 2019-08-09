@@ -77,11 +77,13 @@ namespace rgkaizen.daylio
 
             var refModelList = BuildRefModelList(entriesList, activitiesList, refList);
 
+            var s = refModelList.Select(x => x.ActivityId).Distinct().ToList();
+            var q = string.Join(",", s);
             _dbContext.ActivityEntryRefs.AddRange(refModelList);
             _dbContext.SaveChanges();
 
             Console.WriteLine($"Got {_dbContext.Entries.Count()} entries");
-            Console.WriteLine($"Got {_dbContext.Activities.Count()} activites");
+            Console.WriteLine($"Got {_dbContext.Activities.Count()} activities");
             Console.WriteLine($"Got {_dbContext.ActivityEntryRefs.Count()} entry activity refs");
         }
 
@@ -96,13 +98,22 @@ namespace rgkaizen.daylio
 
         private DaylioEntryModel CreateNewEntry(DaylioRawModel raw)
         {
-            return new DaylioEntryModel()
+            try
             {
-                Guid = Guid.NewGuid().ToString(),
-                date = DateTime.Parse($"{raw.year}, {raw.date}, {raw.time}"),
-                mood = raw.mood,
-                note = raw.note,    
-            };
+                return new DaylioEntryModel()
+                {
+                    Guid = Guid.NewGuid().ToString(),
+                    date = DateTime.Parse($"{raw.full_date} {raw.time}"),
+                    mood = raw.mood,
+                    note = raw.note,
+                };
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine();
+            }
+
+            return null;
         }
 
         private void ParseActivities(
@@ -115,7 +126,7 @@ namespace rgkaizen.daylio
             var activites = raw.activities.Contains("|")
                 ? raw.activities.Split("|")
                 : new string[] { raw.activities };
-            
+
             activites.ForEach(activity =>
             {
                 activity = activity.Trim();
@@ -142,9 +153,15 @@ namespace rgkaizen.daylio
             List<(string entryGuid, string activityGuid)> refList)
         {
             return refList.Select(reference =>
-            {              
+            {
                 var s = entries.Find(entry => entry.Guid.Equals(reference.entryGuid)).Id;
                 var q = activities.Find(activity => activity.Guid.Equals(reference.activityGuid)).Id;
+
+                if (q == default(int) || s == default(int))
+                {
+                    Console.WriteLine();
+                }
+
                 return new DaylioActivityEntryRefModel
                 {
                     EntryId = entries.Find(entry => entry.Guid.Equals(reference.entryGuid)).Id,

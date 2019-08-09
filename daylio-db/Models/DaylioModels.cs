@@ -8,7 +8,7 @@ namespace rgkaizen.daylio.Models
     {
         [Key]
         public int key { get; set; }
-        public int year { get; set; }
+        public string full_date { get; set; }
         public string date { get; set; }
         public string weekday { get; set; }
         public string time { get; set; }
@@ -19,7 +19,7 @@ namespace rgkaizen.daylio.Models
 
     public class DaylioCsvModel
     {
-        public int year { get; set; }
+        public string full_date { get; set; }
         public string date { get; set; }
         public string weekday { get; set; }
         public string time { get; set; }

@@ -11,7 +11,7 @@ namespace rgkaizen.daylio
             return new DaylioRawModel
             {
                 mood = model.mood,
-                year = model.year,
+                full_date = model.full_date,
                 date = model.date,
                 time = model.time,
                 weekday = model.weekday,
